@@ -9,6 +9,9 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <p>
+          3D pose estimation in football shooting technique
+        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
