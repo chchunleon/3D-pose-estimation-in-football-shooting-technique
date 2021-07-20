@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import "antd/dist/antd.css";
 import './index.css';
 import App from './App';
+import Heading from './Heading';
+import Upload from './Upload';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <Heading /> */}
+    <Upload />
   </React.StrictMode>,
   document.getElementById('root')
 );
