@@ -1,0 +1,11 @@
+type VideoFile @model {
+  uid: ID!
+  name: String!
+  type: String!
+  webkitRelativePath: String
+  lastModified: String
+  size: Int
+  lastModifiedDate: AWSDateTime,
+  height: String!
+  shootingFoot: String!
+}

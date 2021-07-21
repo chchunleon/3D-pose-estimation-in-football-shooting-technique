@@ -9,7 +9,6 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Heading /> */}
     <Upload />
   </React.StrictMode>,
   document.getElementById('root')
