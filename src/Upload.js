@@ -7,10 +7,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Storage, API } from 'aws-amplify';
 import { createVideoFile } from './graphql/mutations';
 import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator } from '@aws-amplify/ui-react';
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports';
+// import Amplify from 'aws-amplify';
+// import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 
 const { Header, Footer, Sider, Content } = Layout;
 
