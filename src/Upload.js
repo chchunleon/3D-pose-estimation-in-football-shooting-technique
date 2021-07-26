@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import './index.css';
 import { Space, Divider, Radio, Row, Col, Input, InputNumber, Layout, Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import axios from 'axios';
 // import { Storage, API } from 'aws-amplify';
 // import { createVideoFile } from './graphql/mutations';
 // import { withAuthenticator, AmplifySignOut, AmplifyAuthenticator } from '@aws-amplify/ui-react';
@@ -58,7 +59,6 @@ class UploadVideo extends Component {
 
     async clickAnalysis(e) {
         this.setState({ isUploading: true })
-        console.log('clickAnalysis', e, this.state.file, this.state.file)
         const fileName = this.state.file.name
         // await Storage.put(fileName, this.state.file);
         const uploadFile = {
@@ -74,6 +74,7 @@ class UploadVideo extends Component {
             height: this.state.height,
             shootingFoot: this.state.shootingFoot
         }
+        console.log('clickAnalysis', e, this.state.file, uploadFile)
 
         // try {
         // const uploadStatus = await API.graphql({ query: createVideoFile, variables: { input: uploadFile } })
@@ -84,24 +85,47 @@ class UploadVideo extends Component {
 
         const arrayBuffer = await this.getArrayBuffer(uploadFile.file);
         console.log('arrayBuffer', arrayBuffer)
-        const response =
-            fetch(`http://3.0.100.43:8080/videos`, {
-                method: 'POST',
+        // const response =
+        //     fetch(`http://3.0.100.43:8080/videos`, {
+        //         method: 'POST',
 
-                body: JSON.stringify({
-                    height: uploadFile.height,
-                    shootingFoot: uploadFile.shootingFoot,
-                    file: Array.from(new Uint8Array(arrayBuffer)),
-                }),
-            }).then((res) => {
-                if (!res.ok) {
-                    throw res.statusText;
-                }
-                console.log('success', res)
-                return res.json()
+        //         body: JSON.stringify({
+        //             height: uploadFile.height,
+        //             shootingFoot: uploadFile.shootingFoot,
+        //             file: Array.from(new Uint8Array(arrayBuffer)),
+        //         }),
+        //     }).then((res) => {
+        //         if (!res.ok) {
+        //             throw res.statusText;
+        //         }
+        //         console.log('success', res)
+        //         return res.json()
+        //     })
+        //         .then(({ data }) => console.log('data', data))
+        //         .catch(err => console.log('err', err))
+
+        // console.log('response', response)
+
+        var bodyFormData = new FormData();
+        bodyFormData.append('height', this.state.height);
+        bodyFormData.append('shootingFoot', this.state.shootingFoot);
+        bodyFormData.append('file', this.state.file);
+        axios({
+            method: "post",
+            url: "http://3.0.100.43:8080/videos",
+            data: bodyFormData,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then(function (response) {
+                //handle success
+                console.log('success res', response);
             })
-                .then(({ data }) => console.log('data', data))
-                .catch(err => console.log('err', err))
+            .catch(function (response) {
+                //handle error
+                console.log('err res', response);
+            });
+
+
 
         this.setState({ isUploading: false })
         // }
