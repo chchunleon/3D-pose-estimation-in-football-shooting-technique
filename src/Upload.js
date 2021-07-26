@@ -97,6 +97,7 @@ class UploadVideo extends Component {
                 if (!res.ok) {
                     throw res.statusText;
                 }
+                console.log('success', res)
                 return res.json()
             })
                 .then(({ data }) => console.log('data', data))
