@@ -85,6 +85,13 @@ class UploadVideo extends Component {
 
         const arrayBuffer = await this.getArrayBuffer(uploadFile.file);
         console.log('arrayBuffer', arrayBuffer)
+
+        // let headers = new Headers();
+
+        // // headers.append('Content-Type', 'application/json');
+        // // headers.append('Accept', 'application/json');
+        // // headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
+        // headers.append('Origin', 'http://localhost:3000');
         // const response =
         //     fetch(`http://3.0.100.43:8080/videos`, {
         //         method: 'POST',
@@ -94,6 +101,8 @@ class UploadVideo extends Component {
         //             shootingFoot: uploadFile.shootingFoot,
         //             file: Array.from(new Uint8Array(arrayBuffer)),
         //         }),
+        //         credentials: true,
+        //         headers: headers
         //     }).then((res) => {
         //         if (!res.ok) {
         //             throw res.statusText;
@@ -106,24 +115,39 @@ class UploadVideo extends Component {
 
         // console.log('response', response)
 
-        var bodyFormData = new FormData();
-        bodyFormData.append('height', this.state.height);
-        bodyFormData.append('shootingFoot', this.state.shootingFoot);
-        bodyFormData.append('file', this.state.file);
-        axios({
-            method: "post",
-            url: "http://3.0.100.43:8080/videos",
-            data: bodyFormData,
-            headers: { "Content-Type": "multipart/form-data" },
+        // var bodyFormData = new FormData();
+        // bodyFormData.append('height', this.state.height);
+        // bodyFormData.append('shootingFoot', this.state.shootingFoot);
+        // bodyFormData.append('file', this.state.file);
+        // axios({
+        //     method: "post",
+        //     url: "http://3.0.100.43:8080/videos",
+        //     data: bodyFormData,
+        //     headers: { "Content-Type": "multipart/form-data" },
+        // })
+        //     .then(function (response) {
+        //         //handle success
+        //         console.log('success res', response);
+        //     })
+        //     .catch(function (response) {
+        //         //handle error
+        //         console.log('err res', response);
+        //     });
+
+        const response = await axios.post("http://3.0.100.43:8080/videos", JSON.stringify(uploadFile), {
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
-            .then(function (response) {
+            .then(function (res) {
                 //handle success
-                console.log('success res', response);
+                console.log('success res', res)
             })
-            .catch(function (response) {
+            .catch(function (er) {
                 //handle error
-                console.log('err res', response);
+                console.log('err res', er)
             });
+        console.log('response', response)
 
 
 
@@ -193,17 +217,17 @@ class UploadVideo extends Component {
                 <br />
 
                 {/* <Row>
-                        <Col span={24}><AmplifySignOut style={style} /></Col>
-                    </Row> */}
+                    <Col span={24}><AmplifySignOut style={style} /></Col>
+                </Row> */}
             </div >
             /* </AmplifyAuthenticator> */
         );
     }
 }
 
-ReactDOM.render(
-    <UploadVideo />,
-    document.getElementById('container'),
-);
+// ReactDOM.render(
+//     <UploadVideo />,
+//     document.getElementById('container'),
+// );
 
-export default Upload;
+export default UploadVideo;

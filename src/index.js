@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import Heading from './Heading';
 import Upload from './Upload';
+import Dashboard from './Dashboard';
 import reportWebVitals from './reportWebVitals';
 // import Amplify from 'aws-amplify';
 // import awsconfig from './aws-exports';
