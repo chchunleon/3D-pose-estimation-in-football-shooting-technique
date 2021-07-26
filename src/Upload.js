@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import "antd/dist/antd.css";
 import './index.css';
-import { Space, Divider, Radio, Row, Col, Input, InputNumber, Layout, Upload, Button } from 'antd';
+import { Space, Divider, Radio, Row, Col, Input, Layout, Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Storage, API } from 'aws-amplify';
 import { createVideoFile } from './graphql/mutations';
@@ -35,24 +35,13 @@ class UploadVideo extends Component {
     }
 
     beforeUpload = (file, fileList) => {
-        this.setState({ file: file })
-        console.log('beforeupload', file, fileList, this.state.file)
+        this.file = file
+        console.log('beforeupload', file, fileList, this.file)
         return false
     }
 
-    changeHeight = e => {
-        this.setState({ height: e })
-        console.log(this.state.height, this.state.shootingFoot, this.state.file, e)
-        if (this.state.height == null)
-            console.log('height null')
-        if (this.state.shootingFoot == null)
-            console.log('shootingFoot null')
-        if (!this.state.file && this.state.file == null)
-            console.log('file null')
-    }
-
     changeFoot = e => {
-        this.setState({ shootingFoot: e.target.value })
+        this.shootingFoot = e.target.value
         // setValue(e.target.value);
     }
 
