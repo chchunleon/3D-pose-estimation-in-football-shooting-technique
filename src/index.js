@@ -7,6 +7,7 @@ import Heading from './Heading';
 import Upload from './Upload';
 import Dashboard from './Dashboard';
 import reportWebVitals from './reportWebVitals';
+import ThreeGrid from './ThreeGrid';
 // import Amplify from 'aws-amplify';
 // import awsconfig from './aws-exports';
 
@@ -14,7 +15,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Upload />
+    {/* <Upload /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
