@@ -6,7 +6,7 @@ const XZPlane = ({ size }) => (
         rotation={[1.5 * Math.PI, 0, 0]}
         position={[0, 0, 0]}
     >
-        <meshStandardMaterial attach="material" color="#ebecf0" wireframe roughness="0.5" />
+        <meshStandardMaterial attach="material" color="#fffff" wireframe roughness="0.5" />
     </Plane>
 );
 
@@ -14,9 +14,9 @@ const XYPlane = ({ size }) => (
     <Plane
         args={[size, size, size, size]}
         rotation={[0, 0, 0]}
-        position={[0, 0, 0]}
+        position={[500, 500, 4000]}
     >
-        <meshStandardMaterial attach="material" color="#ebecf0" wireframe roughness="0.5" />
+        <meshStandardMaterial attach="material" color="#ffffff" wireframe roughness="0.5" />
     </Plane>
 );
 
@@ -26,7 +26,7 @@ const YZPlane = ({ size }) => (
         rotation={[0, Math.PI / 2, 0]}
         position={[0, 0, 0]}
     >
-        <meshStandardMaterial attach="material" color="#ebecf0" wireframe roughness="0.5" />
+        <meshStandardMaterial attach="material" color="#ffffff" wireframe roughness="0.5" />
     </Plane>
 );
 
