@@ -69,7 +69,7 @@ class UploadVideo extends Component {
             this.setState({ file: file.file, videoObjectURL: null, isAnalysed: false, isCalculated: false })
         else
             this.setState({ file: file.file, videoObjectURL: URL.createObjectURL(file.file), isAnalysed: false, isCalculated: false })
-        this.props.onRemoveVideo1(0)
+        this.props.onRemoveVideo2(1)
         console.log('videoObjectURL', this.state.videoObjectURL);
 
         this.playVideo()
@@ -108,7 +108,7 @@ class UploadVideo extends Component {
         if (!this.state.videoObjectURL)
             return
         console.log('playvidoe', this.state.videoObjectURL, this.state.file)
-        var video = document.getElementById('video-player0');
+        var video = document.getElementById('video-player1');
         video.src = this.state.videoObjectURL
         video.play()
         // video.querySelectorAll('*').forEach(n => n.remove());
@@ -164,7 +164,7 @@ class UploadVideo extends Component {
             height: this.state.height,
             weight: this.state.weight,
             shootingFoot: this.state.shootingFoot,
-            tab: "0"
+            tab: "1"
         }
         // name: this.state.file.name,
         //     type: this.state.file.type,
@@ -219,7 +219,7 @@ class UploadVideo extends Component {
         bodyFormData.append('weight', this.state.weight);
         bodyFormData.append('shootingFoot', this.state.shootingFoot);
         bodyFormData.append('file', uploadFile.file);
-        bodyFormData.append('tab', "0");
+        bodyFormData.append('tab', "1");
         axios({
             method: "post",
             // url: "http://3.1.100.43:8080/uploadvideo",
@@ -287,7 +287,7 @@ class UploadVideo extends Component {
         bodyFormData.append('height', this.state.height);
         bodyFormData.append('weight', this.state.weight);
         bodyFormData.append('fileName', this.state.file.name);
-        bodyFormData.append('tab', "0");
+        bodyFormData.append('tab', "1");
         console.log('calculateVelocity', this.state.file.name)
         axios({
             method: "post",
@@ -320,7 +320,7 @@ class UploadVideo extends Component {
             }.bind(this))
             .finally(function (response) {
                 this.setState({ isCalculating: false })
-                this.props.onVideo1Change({
+                this.props.onVideo2Change({
                     videoLength: parseFloat(this.state.imgDetails.duration),
                     frameCounts: this.state.frameCount,
                     selectedFrame: this.state.frameNumber,
@@ -336,12 +336,12 @@ class UploadVideo extends Component {
                     ankleLinearVelocity: parseFloat(this.state.ankleLinearVelocity).toFixed(2),
                     ballVelocity: parseFloat(this.state.ballVelocity).toFixed(2),
                     videoObjectURL: this.state.videoObjectURL
-                }, 0)
+                }, 1)
             }.bind(this));
     }
 
     changeTabs = (e) => {
-        console.log('changeTabgs', e, 0)
+        console.log('changeTabgs', e, 1)
         if (e == 1) {
             this.setState({ imgFilter: 0 })
             this.getFrame('imgFilter', 0)
@@ -375,8 +375,7 @@ class UploadVideo extends Component {
     changeFrameSlider = (value) => {
         this.setState({ frameNumber: value })
         this.getFrame('frame', value)
-        console.log('changeFrame', value)
-        this.props.onVideo1Change({
+        this.props.onVideo2Change({
             videoLength: parseFloat(this.state.imgDetails.duration),
             frameCounts: this.state.frameCount,
             selectedFrame: this.state.frameNumber,
@@ -392,7 +391,7 @@ class UploadVideo extends Component {
             ankleLinearVelocity: parseFloat(this.state.ankleLinearVelocity).toFixed(2),
             ballVelocity: parseFloat(this.state.ballVelocity).toFixed(2),
             videoObjectURL: this.state.videoObjectURL
-        }, 0)
+        }, 1)
     }
 
     changeImgFilter = (e) => {
@@ -410,8 +409,8 @@ class UploadVideo extends Component {
             bodyFormData.append('imgFilter', value);
         }
         bodyFormData.append('shootingFoot', this.state.shootingFoot);
-        bodyFormData.append('tab', "0");
-        console.log(this.state.frameNumber, this.state.imgFilter, type, value, bodyFormData, 0)
+        bodyFormData.append('tab', "1");
+        console.log(this.state.frameNumber, this.state.imgFilter, type, value, bodyFormData, 1)
         axios({
             method: "post",
             url: "http://3.1.81.36:8080/frames",
@@ -670,7 +669,7 @@ class UploadVideo extends Component {
                     <Col span={12}>
                         <div style={{ display: this.state.file ? "block" : "none" }}>
                             {/* <video id="video-player" width="320" height="240" controls> */}
-                            <video id="video-player0" width="500" controls>
+                            <video id="video-player1" width="500" controls>
                                 {/* <source id="video-source"></source> */}
                             </video>
                         </div>
@@ -734,7 +733,7 @@ class UploadVideo extends Component {
                             </TabPane>
                             <TabPane tab="Angle" key="3">
                                 <Col span={24}>
-                                    <Radio.Group id="angleFilters0" name="radiogroup" defaultValue={2} value={this.state.imgFilter} onChange={this.changeImgFilter}>
+                                    <Radio.Group id="angleFilters1" name="radiogroup" defaultValue={2} value={this.state.imgFilter} onChange={this.changeImgFilter}>
                                         {/* <Radio value={0}>Normal</Radio> */}
                                         {/* <Radio value={1}>Skeleton</Radio> */}
                                         <Radio value={2}>Hip Angle</Radio>
@@ -779,7 +778,7 @@ class UploadVideo extends Component {
                                     //         Please select another frame
                                     //     </Button>
                                     // }
-                                    />) : (<Dashboard tabNumber={0} threeD={this.state.human_coordinates.length == 0 ? '' : JSON.parse(JSON.stringify(this.state.human_coordinates[this.state.frameNumber]))} jointEdges={this.state.joint_edges.length == 0 ? '' : this.state.joint_edges}></Dashboard>
+                                    />) : (<Dashboard tabNumber={1} threeD={this.state.human_coordinates.length == 0 ? '' : JSON.parse(JSON.stringify(this.state.human_coordinates[this.state.frameNumber]))} jointEdges={this.state.joint_edges.length == 0 ? '' : this.state.joint_edges}></Dashboard>
                                     )}
                                 </Col>
 

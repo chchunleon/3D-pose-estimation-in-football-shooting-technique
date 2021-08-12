@@ -48,19 +48,19 @@ class Dashboard extends Component {
         if (this.props.threeD == '') {
             var has3D = ''
 
-            if (document.getElementById('threeboard')) {
-                document.getElementById('threeboard').innerHTML = ''
+            if (document.getElementById('threeboard' + this.props.tabNumber.toString())) {
+                document.getElementById('threeboard' + this.props.tabNumber.toString()).innerHTML = ''
             }
         }
         else {
             var has3D = this.props.threeD.substring(0, this.props.threeD.length - 2).substring(2).split("', '")
 
             // JSON.parse('[' + this.props.threeD + ']')
-            console.log('has3d', has3D[0])
-            console.log('check has3d 0 ', has3D[0].split(',')[0], has3D[0].split(',')[1], has3D[0].split(',')[2])
-            has3D.map((p, i) => {
-                console.log(parseFloat(p.split(',')[0]))
-            })
+            // console.log('has3d', has3D[0])
+            // console.log('check has3d 0 ', has3D[0].split(',')[0], has3D[0].split(',')[1], has3D[0].split(',')[2])
+            // has3D.map((p, i) => {
+            // console.log(parseFloat(p.split(',')[0]))
+            // })
 
 
             const scene = new THREE.Scene();
@@ -81,7 +81,7 @@ class Dashboard extends Component {
             // Orthographic camera
             const width = 25;
             const height = width * (window.innerHeight / window.innerWidth);
-            console.log('height', height)
+            // console.log('height', height)
             const camera = new THREE.OrthographicCamera(
                 width / -1, // left
                 width / 1, // right
@@ -101,9 +101,9 @@ class Dashboard extends Component {
             renderer.setSize(ww, hh);
             // renderer.setSize(window.innerWidth / 1.5, window.innerHeight / 1.5);
             // document.body.appendChild(renderer.domElement);
-            if (document.getElementById('threeboard')) {
-                document.getElementById('threeboard').innerHTML = ''
-                document.getElementById('threeboard').appendChild(renderer.domElement)
+            if (document.getElementById('threeboard' + this.props.tabNumber.toString())) {
+                document.getElementById('threeboard' + this.props.tabNumber.toString()).innerHTML = ''
+                document.getElementById('threeboard' + this.props.tabNumber.toString()).appendChild(renderer.domElement)
             }
 
 
@@ -154,7 +154,7 @@ class Dashboard extends Component {
                     var points = []
                     var coord1 = has3D[parseInt(j[0])]
                     var coord2 = has3D[parseInt(j[1])]
-                    console.log('ss', j, coord1, coord2)
+                    // console.log('ss', j, coord1, coord2)
                     points.push(new THREE.Vector3(-1 * parseFloat(coord1.split(',')[0]), -1 * parseFloat(coord1.split(',')[1]), parseFloat(coord1.split(',')[2])))
                     points.push(new THREE.Vector3(-1 * parseFloat(coord2.split(',')[0]), -1 * parseFloat(coord2.split(',')[1]), parseFloat(coord2.split(',')[2])))
                     pointsLine[i] = new THREE.BufferGeometry().setFromPoints(points);
@@ -240,16 +240,21 @@ class Dashboard extends Component {
 
         if (this.props.threeD == '') {
             var showError = 'Error'
-            if (document.getElementById('threeboard')) {
-                document.getElementById('threeboard').innerHTML = ''
+            if (document.getElementById('threeboard' + this.props.tabNumber.toString())) {
+                document.getElementById('threeboard' + this.props.tabNumber.toString()).innerHTML = ''
             }
         } else {
             var showError = ''
         }
 
         this.generateModel()
-        console.log('props threeD', this.props.threeD)
-        console.log('props jointEdges', this.props.jointEdges)
+        // console.log('props threeD', this.props.threeD)
+        // console.log('props jointEdges', this.props.jointEdges)
+
+        setTimeout(() => {
+            this.generateModel();
+            // console.log('timout 3D')
+        }, 500)
 
         document.addEventListener("DOMContentLoaded", function (event) {
             //we ready baby
@@ -266,7 +271,7 @@ class Dashboard extends Component {
                         {/* <h2>3D Model</h2> */}
                         {showError == 'Error' ? (
                             <div></div>
-                        ) : (<div id='threeboard'></div>
+                        ) : (this.props.tabNumber == 0 ? (<div id='threeboard0'></div>) : (<div id='threeboard1'></div>)
                         )}
 
                     </Col>
