@@ -131,7 +131,10 @@ class UploadVideo extends Component {
     }
 
     removeVideo = e => {
-        this.setState({ file: null })
+        this.setState({ file: null, videoObjectURL: null, isAnalysed: false, isCalculated: false })
+        this.props.onRemoveVideo1(0)
+        var video = document.getElementById('video-player0');
+        video.src = null
         console.log('remove vil', e, this.state.file)
     }
 
@@ -249,16 +252,18 @@ class UploadVideo extends Component {
                 console.log('rrr ', JSON.parse(JSON.stringify(JSON.parse(response.data.human_coordinates)['0']))['0'])
                 console.log('imgdetail', JSON.parse(response.data.img_details))
                 this.openNotification('AnalysisSuccess')
+                this.setState({ isAnalysed: true })
+                this.convertTime()
+                this.calulateVelocity()
             }.bind(this))
             .catch(function (response) {
                 //handle error
                 console.log('err res', response);
+                this.setState({ isAnalysed: false })
                 this.openNotification('AnalysisError')
             }.bind(this))
             .finally(function (response) {
-                this.setState({ isUploading: false, isAnalysed: true, isCalculating: false })
-                this.convertTime()
-                this.calulateVelocity()
+                this.setState({ isUploading: false })
             }.bind(this));
 
         // const response = await axios.post("http://3.0.100.43:8080/videos", uploadFile, {
@@ -280,7 +285,7 @@ class UploadVideo extends Component {
     }
 
     calulateVelocity = () => {
-        this.setState({ isCalculating: true })
+        this.setState({ isCalculating: true, isCalculated: false })
         var bodyFormData = new FormData();
         bodyFormData.append('frameNumber', 41);
         bodyFormData.append('shootingFoot', this.state.shootingFoot);
@@ -312,31 +317,40 @@ class UploadVideo extends Component {
                     joinChangesGraph: 'data:image/png;base64,' + JSON.parse(response.data.joint_changes_img)['img'],
                     shootingFrame: response.data.min_distance_frame.toString()
                 })
-            }.bind(this))
-            .catch(function (response) {
-                //handle error
-                console.log('err res', response);
-                this.openNotification('CalculationError')
-            }.bind(this))
-            .finally(function (response) {
-                this.setState({ isCalculating: false })
                 this.props.onVideo1Change({
                     videoLength: parseFloat(this.state.imgDetails.duration),
                     frameCounts: this.state.frameCount,
                     selectedFrame: this.state.frameNumber,
-                    hip: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[0]).toFixed(2),
-                    shootingKnee: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[1]).toFixed(2),
-                    balancingHand: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[2]).toFixed(2),
-                    plantingFootKnee: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[3]).toFixed(2),
-                    balancingElbow: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[4]).toFixed(2),
-                    shootLegAnkle: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[5]).toFixed(2),
+                    hip: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[0]).toFixed(2),
+                    shootingKnee: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[1]).toFixed(2),
+                    balancingHand: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[2]).toFixed(2),
+                    plantingFootKnee: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[3]).toFixed(2),
+                    balancingElbow: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[4]).toFixed(2),
+                    shootLegAnkle: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[this.state.frameNumber].split(',')[5]).toFixed(2),
+                    // hip: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[0],
+                    // shootingKnee: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[1],
+                    // balancingHand: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[2],
+                    // plantingFootKnee: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[3],
+                    // balancingElbow: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[4],
+                    // shootLegAnkle: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[this.state.frameNumber].split(',')[5],
                     shootingFrame: this.state.shootingFrame,
                     angularDegree: parseFloat(this.state.angularDegree).toFixed(2),
                     angularVelocity: parseFloat(this.state.angularVelocity).toFixed(2),
                     ankleLinearVelocity: parseFloat(this.state.ankleLinearVelocity).toFixed(2),
                     ballVelocity: parseFloat(this.state.ballVelocity).toFixed(2),
-                    videoObjectURL: this.state.videoObjectURL
+                    videoObjectURL: this.state.videoObjectURL,
+                    videoName: this.state.file.name
                 }, 0)
+                this.openNotification('CalculationSuccess')
+            }.bind(this))
+            .catch(function (response) {
+                //handle error
+                console.log('err res', response);
+                this.setState({ isCalculated: false })
+                this.openNotification('CalculationError')
+            }.bind(this))
+            .finally(function (response) {
+                this.setState({ isCalculating: false })
             }.bind(this));
     }
 
@@ -376,23 +390,31 @@ class UploadVideo extends Component {
         this.setState({ frameNumber: value })
         this.getFrame('frame', value)
         console.log('changeFrame', value)
-        this.props.onVideo1Change({
-            videoLength: parseFloat(this.state.imgDetails.duration),
-            frameCounts: this.state.frameCount,
-            selectedFrame: this.state.frameNumber,
-            hip: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[0]).toFixed(2),
-            shootingKnee: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[1]).toFixed(2),
-            balancingHand: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[2]).toFixed(2),
-            plantingFootKnee: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[3]).toFixed(2),
-            balancingElbow: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[4]).toFixed(2),
-            shootLegAnkle: this.state.key_frame_angles == '' ? 'NaN' : parseFloat(this.state.key_frame_angles[value].split(',')[5]).toFixed(2),
-            shootingFrame: this.state.shootingFrame,
-            angularDegree: parseFloat(this.state.angularDegree).toFixed(2),
-            angularVelocity: parseFloat(this.state.angularVelocity).toFixed(2),
-            ankleLinearVelocity: parseFloat(this.state.ankleLinearVelocity).toFixed(2),
-            ballVelocity: parseFloat(this.state.ballVelocity).toFixed(2),
-            videoObjectURL: this.state.videoObjectURL
-        }, 0)
+        if (this.state.isCalculated && this.state.isAnalysed)
+            this.props.onVideo1Change({
+                videoLength: parseFloat(this.state.imgDetails.duration),
+                frameCounts: this.state.frameCount,
+                selectedFrame: value,
+                hip: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[0]).toFixed(2),
+                shootingKnee: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[1]).toFixed(2),
+                balancingHand: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[2]).toFixed(2),
+                plantingFootKnee: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[3]).toFixed(2),
+                balancingElbow: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[4]).toFixed(2),
+                shootLegAnkle: this.state.key_frame_angles == '' ? '---' : parseFloat(this.state.key_frame_angles[value].split(',')[5]).toFixed(2),
+                // hip: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[0],
+                // shootingKnee: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[1],
+                // balancingHand: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[2],
+                // plantingFootKnee: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[3],
+                // balancingElbow: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[4],
+                // shootLegAnkle: this.state.key_frame_angles == '' ? 'NaN' : this.state.key_frame_angles[value].split(',')[5],
+                shootingFrame: this.state.shootingFrame,
+                angularDegree: parseFloat(this.state.angularDegree).toFixed(2),
+                angularVelocity: parseFloat(this.state.angularVelocity).toFixed(2),
+                ankleLinearVelocity: parseFloat(this.state.ankleLinearVelocity).toFixed(2),
+                ballVelocity: parseFloat(this.state.ballVelocity).toFixed(2),
+                videoObjectURL: this.state.videoObjectURL,
+                videoName: this.state.file.name
+            }, 0)
     }
 
     changeImgFilter = (e) => {
@@ -559,6 +581,16 @@ class UploadVideo extends Component {
                 //     console.log('Notification Clicked!');
                 // },
             });
+        } else if (type == 'CalculationSuccess') {
+            notification.success({
+                message: `Success!`,
+                description:
+                    `Speed Metrics are calculated successfully!`,
+                // position,
+                // onClick: () => {
+                //     console.log('Notification Clicked!');
+                // },
+            });
         }
     }
 
@@ -629,7 +661,7 @@ class UploadVideo extends Component {
                             </Upload>
                         </Row>
                         <Row>
-                            <Badge color={'grey'} text={'The recommended duration of the video is less than one minute.'} style={{ margin: "10px", color: "grey" }} />
+                            <Badge color={'grey'} text={'The recommended duration of the video is less than 30 seconds.'} style={{ margin: "10px", color: "grey" }} />
                         </Row>
                         <br />
                         <Row>

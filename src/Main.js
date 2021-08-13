@@ -2,8 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import "antd/dist/antd.css";
 import './index.css';
-import { Table, Tag, Space, Progress, Statistic, Divider, Radio, Row, Col, Input, InputNumber, Layout, Upload, Button, Slider, Image, notification, message, Badge, Tabs, Result } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Table, Tag, Divider, Row, Col, Button, Tabs } from 'antd';
 import axios from 'axios';
 import UploadView from './Upload';
 import UploadView1 from './Upload1'
@@ -319,13 +318,14 @@ function Main() {
     function handleRemoveVideo(tab) {
         console.log('handle remove video', tab)
         if (tab == 0)
-            setHasVideo2(false)
+            setHasVideo1(false)
         else
             setHasVideo2(false)
+        setIsCompare(false)
     }
 
     function handleVideoChange(value, tab) {
-        console.log('value v1', value, tab, video1, video2)
+        console.log('value ', tab, value, video1, video2)
         if (tab == 0) {
             setVideo1(prevState => ({
                 ...prevState,
@@ -367,8 +367,7 @@ function Main() {
             setHasVideo2(true)
         }
 
-        console.log('aa', video1, video2, data)
-        // setData(prevState => ([]))
+        // console.log('aa', video1, video2, data)
 
     }
 
@@ -412,42 +411,11 @@ function Main() {
 
             {hasVideo1 && hasVideo2 && isCompare ? (<Row style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Table columns={columns} dataSource={data} pagination={false} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
-                {/* <Table dataSource={data}>
-                    <ColumnGroup title="Name">
-                        <Column title="First Name" dataIndex="firstName" key="firstName" />
-                        <Column title="Last Name" dataIndex="lastName" key="lastName" />
-                    </ColumnGroup>
-                    <Column title="Age" dataIndex="age" key="age" />
-                    <Column title="Address" dataIndex="address" key="address" />
-                    <Column
-                        title="Tags"
-                        dataIndex="tags"
-                        key="tags"
-                        render={tags => (
-                            <>
-                                {tags.map(tag => (
-                                    <Tag color="blue" key={tag}>
-                                        {tag}
-                                    </Tag>
-                                ))}
-                            </>
-                        )}
-                    />
-                    <Column
-                        title="Action"
-                        key="action"
-                        render={(text, record) => (
-                            <Space size="middle">
-                                <a>Invite {record.lastName}</a>
-                                <a>Delete</a>
-                            </Space>
-                        )}
-                    />
-                </Table> */}
 
                 <Divider />
 
-            </Row>) : (<Row />)}
+            </Row>)
+                : (<Row />)}
 
 
         </div >
