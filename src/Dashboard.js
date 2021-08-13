@@ -180,6 +180,9 @@ class Dashboard extends Component {
             // A
             // camera.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
 
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+
 
             const animate = function () {
                 requestAnimationFrame(animate);
