@@ -47,7 +47,7 @@ It will start the flask application and listens the the request from the fronten
 
 4 - select a video frame
 
-![Alt text](./public/select-video-frame.png.png)
+![Alt text](./public/select-video-frame.png)
 
 5 - image filters
 
