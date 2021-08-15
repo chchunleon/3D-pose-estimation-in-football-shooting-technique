@@ -161,7 +161,7 @@ class UploadVideo extends Component {
             method: "post",
             // url: "http://3.1.100.43:8080/uploadvideo",
             // url: "https://3.1.81.36:8080/uploadvideo",
-            url: "https://pose3dapi.cf:8080/uploadvideo",
+            url: "https://www.pose3dapi.cf:8080/uploadvideo",
             data: bodyFormData,
             credentials: true,
             // headers: { "Content-Type": "multipart/form-data" },
@@ -211,7 +211,7 @@ class UploadVideo extends Component {
         bodyFormData.append('tab', "1");
         axios({
             method: "post",
-            url: "https://pose3dapi.cf:8080/joint",
+            url: "https://www.pose3dapi.cf:8080/joint",
             data: bodyFormData,
             credentials: true,
             // headers: { "Content-Type": "multipart/form-data" },
@@ -345,7 +345,7 @@ class UploadVideo extends Component {
         console.log(this.state.frameNumber, this.state.imgFilter, type, value, bodyFormData, 1)
         axios({
             method: "post",
-            url: "https://pose3dapi.cf:8080/frames",
+            url: "https://www.pose3dapi.cf:8080/frames",
             data: bodyFormData,
             credentials: true,
             // headers: { "Content-Type": "multipart/form-data" },
@@ -371,7 +371,7 @@ class UploadVideo extends Component {
     getImg = () => {
         axios({
             method: "get",
-            url: "https://pose3dapi.cf:8080/frames",
+            url: "https://www.pose3dapi.cf:8080/frames",
             credentials: true,
             // headers: { "Content-Type": "multipart/form-data" },
             headers: { "Access-Control-Allow-Origin": "*" },
