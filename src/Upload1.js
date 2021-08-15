@@ -26,8 +26,6 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const IMG_FILTER_INDEX = ['Skeleton', 'Hip angle', 'Shooting Knee Angle', 'Balancing Hand Angle', 'Planting Foot Knee Angle', 'Balancing Elbow Angle', 'Shooting Leg Ankle Angle']
 
-// const [value, setValue] = React.useState(2);
-
 
 class UploadVideo extends Component {
     constructor () {
@@ -64,14 +62,12 @@ class UploadVideo extends Component {
     }
 
     changeVideo = (file) => {
-        console.log('changeVideo', file)
+        // console.log('changeVideo', file)
         if (file.fileList.length == 0)
             this.setState({ file: file.file, videoObjectURL: null, isAnalysed: false, isCalculated: false })
         else
             this.setState({ file: file.file, videoObjectURL: URL.createObjectURL(file.file), isAnalysed: false, isCalculated: false })
         this.props.onRemoveVideo2(1)
-        console.log('videoObjectURL', this.state.videoObjectURL);
-
         this.playVideo()
     }
 
@@ -79,7 +75,6 @@ class UploadVideo extends Component {
         this.setState({ file: file })
         console.log('beforeupload', file, fileList, this.state.file, JSON.stringify(JSON.parse(file)))
         this.setState({ videoObjectURL: URL.createObjectURL(fileList[0]) });
-        console.log('videoObjectURL', this.state.videoObjectURL);
 
         return false
     }
@@ -107,27 +102,10 @@ class UploadVideo extends Component {
     playVideo = () => {
         if (!this.state.videoObjectURL)
             return
-        console.log('playvidoe', this.state.videoObjectURL, this.state.file)
+        // console.log('playvidoe', this.state.videoObjectURL, this.state.file)
         var video = document.getElementById('video-player1');
         video.src = this.state.videoObjectURL
         video.play()
-        // video.querySelectorAll('*').forEach(n => n.remove());
-        // var source = document.createElement('source');
-        // // var source = document.getElementById('video-source')
-
-        // source.setAttribute('src', this.state.videoObjectURL);
-
-        // video.appendChild(source);
-        // video.play();
-
-        // // setTimeout(function () {
-        // //     video.pause();
-
-        // //     source.setAttribute('src', this.state.videoObjectURL);
-
-        // //     video.load();
-        // //     video.play();
-        // // }.bind(this), 3000);
     }
 
     removeVideo = e => {
@@ -135,11 +113,12 @@ class UploadVideo extends Component {
         this.props.onRemoveVideo2(1)
         var video = document.getElementById('video-player1');
         video.src = null
-        console.log('remove vil', e, this.state.file)
+        // console.log('remove vil', e, this.state.file)
     }
 
     async clickAnalysis(e) {
         this.setState({ isUploading: true, isAnalysed: false, isCalculated: false, isCalculating: false })
+        this.props.onRemoveVideo2(1)
 
         this.openNotification('Analysing')
 
@@ -147,7 +126,6 @@ class UploadVideo extends Component {
         // await Storage.put(fileName, this.state.file);
 
         const arrayBuffer = await this.getArrayBuffer(this.state.file);
-        console.log('arrayBuffer', arrayBuffer)
 
         var fileDetails = {
             name: this.state.file.name,
@@ -169,53 +147,9 @@ class UploadVideo extends Component {
             shootingFoot: this.state.shootingFoot,
             tab: "1"
         }
-        // name: this.state.file.name,
-        //     type: this.state.file.type,
-        //         uid: this.state.file.uid,
-        //             webkitRelativePath: this.state.file.webkitRelativePath,
-        //                 lastModified: this.state.file.lastModified.toString(),
-        //                     lastModifiedDate: this.state.file.lastModifiedDate,
-        //                         size: this.state.file.size,
 
-        console.log('clickAnalysis', e, this.state.file, uploadFile, fileDetails)
+        // console.log('clickAnalysis', e, this.state.file, uploadFile, fileDetails)
 
-        // try {
-        // const uploadStatus = await API.graphql({ query: createVideoFile, variables: { input: uploadFile } })
-        // } catch (e) {
-        // console.log('Error!', e)
-        // } finally {
-        // console.log(uploadStatus)
-
-
-
-        // let headers = new Headers();
-
-        // // headers.append('Content-Type', 'application/json');
-        // // headers.append('Accept', 'application/json');
-        // // headers.append('Authorization', 'Basic ' + base64.encode(username + ":" + password));
-        // headers.append('Origin', 'http://localhost:3000');
-        // const response =
-        //     fetch(`http://3.0.100.43:8080/videos`, {
-        //         method: 'POST',
-
-        //         body: JSON.stringify({
-        //             height: uploadFile.height,
-        //             shootingFoot: uploadFile.shootingFoot,
-        //             file: Array.from(new Uint8Array(arrayBuffer)),
-        //         }),
-        //         credentials: true,
-        //         headers: headers
-        //     }).then((res) => {
-        //         if (!res.ok) {
-        //             throw res.statusText;
-        //         }
-        //         console.log('success', res)
-        //         return res.json()
-        //     })
-        //         .then(({ data }) => console.log('data', data))
-        //         .catch(err => console.log('err', err))
-
-        // console.log('response', response)
 
         var bodyFormData = new FormData();
         bodyFormData.append('height', this.state.height);
@@ -248,9 +182,6 @@ class UploadVideo extends Component {
                 var image = document.getElementById('img-frame')
                 image.src = 'data:image/png;base64,' + JSON.parse(response.data.frame0)['img'].toString();
                 // document.body.appendChild(image);
-                console.log('response.data.human_coordinates', JSON.parse(JSON.stringify(JSON.parse(response.data.human_coordinates)['0'])), typeof (JSON.parse(JSON.stringify(JSON.parse(response.data.human_coordinates)['0']))))
-                console.log('rrr ', JSON.parse(JSON.stringify(JSON.parse(response.data.human_coordinates)['0']))['0'])
-                console.log('imgdetail', JSON.parse(response.data.img_details))
                 this.openNotification('AnalysisSuccess')
                 this.setState({ isAnalysed: true })
                 this.convertTime()
@@ -266,22 +197,6 @@ class UploadVideo extends Component {
                 this.setState({ isUploading: false })
             }.bind(this));
 
-        // const response = await axios.post("http://3.0.100.43:8080/videos", uploadFile, {
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // })
-        //     .then(function (res) {
-        //         //handle success
-        //         console.log('success res', res, uploadFile)
-        //     })
-        //     .catch(function (er) {
-        //         //handle error
-        //         console.log('err res', er)
-        //     });
-        // console.log('response', response)
-
-        // }
     }
 
     calulateVelocity = () => {
@@ -293,7 +208,6 @@ class UploadVideo extends Component {
         bodyFormData.append('weight', this.state.weight);
         bodyFormData.append('fileName', this.state.file.name);
         bodyFormData.append('tab', "1");
-        console.log('calculateVelocity', this.state.file.name)
         axios({
             method: "post",
             url: "https://3.1.81.36:8080/joint",
@@ -304,7 +218,7 @@ class UploadVideo extends Component {
         })
             .then(function (response) {
                 //handle success
-                console.log('success res', response);
+                // console.log('success res', response);
                 // this.setState({ ballSpeedFrame: 'data:image/png;base64,' + JSON.parse(response.data.img)['img'] })
                 // var image = document.getElementById('img-frame')
                 this.setState({
@@ -345,7 +259,7 @@ class UploadVideo extends Component {
             }.bind(this))
             .catch(function (response) {
                 //handle error
-                console.log('err res', response);
+                // console.log('err res', response);
                 this.setState({ isCalculated: false })
                 this.openNotification('CalculationError')
             }.bind(this))
@@ -355,7 +269,6 @@ class UploadVideo extends Component {
     }
 
     changeTabs = (e) => {
-        console.log('changeTabgs', e, 1)
         if (e == 1) {
             this.setState({ imgFilter: 0 })
             this.getFrame('imgFilter', 0)
@@ -365,10 +278,6 @@ class UploadVideo extends Component {
         } else if (e == 3) {
             this.setState({ imgFilter: 2 })
             this.getFrame('imgFilter', 2)
-            // if (document.getElementById('angleFilters')) {
-            // document.getElementById('angleFilters').value = 2
-            // console.log('ddd', document.getElementById('angleFilters'))
-            // }
         }
     }
 
@@ -443,7 +352,7 @@ class UploadVideo extends Component {
         })
             .then(function (response) {
                 //handle success
-                console.log('success res', response, JSON.parse(response.data.img));
+                // console.log('success res', response, JSON.parse(response.data.img));
                 this.setState({ selectedFrame: 'data:image/png;base64,' + JSON.parse(response.data.img)['img'] })
                 this.convertTime()
                 // var image = document.getElementById('img-frame')
@@ -451,14 +360,10 @@ class UploadVideo extends Component {
             }.bind(this))
             .catch(function (response) {
                 //handle error
-                console.log('err res', response);
+                // console.log('err res', response);
                 this.setState({ selectedFrame: 'null' })
                 // this.openNotification('getFrameError')
             }.bind(this))
-
-        // var canvas = document.getElementById('canvas')
-        // ctx = canvas.getContext('2d')
-        // ctx = canvas.drawImage()
 
     }
 
@@ -472,23 +377,15 @@ class UploadVideo extends Component {
         })
             .then(function (response) {
                 //handle success
-                console.log('success res', response, JSON.parse(response.data.img));
+                // console.log('success res', response, JSON.parse(response.data.img));
                 this.setState({ selectedFrame: 'data:image/png;base64,' + JSON.parse(response.data.img)['img'] })
                 // var image = document.getElementById('img-frame')
                 // image.src = 'data:image/png;base64,' + JSON.parse(response.data.img)['img'].toString();
             }.bind(this))
             .catch(function (response) {
                 //handle error
-                console.log('err res', response);
+                // console.log('err res', response);
             })
-
-        console.log('show human_coordinates', this.state.human_coordinates)
-        console.log('show key_frame_angles', this.state.key_frame_angles)
-        console.log('show skeleton_2d_coordinates', this.state.skeleton_2d_coordinates)
-        console.log('show imgFilter', this.state.imgFilter)
-        console.log('show joint edege', this.state.joint_edges)
-        // console.log(this.state.human_coordinates[70])
-        console.log(this.state.skeleton_2d_coordinates[0])
 
         var ankleCoord = [];
         for (var i = 0; i < this.state.frameCount; i++) {
@@ -503,27 +400,27 @@ class UploadVideo extends Component {
             // arr.push(parseFloat(a[8].split(',')[2]))
             ankleCoord.push(arr)
         }
-        console.log('anklecorrd', ankleCoord)
+        // console.log('anklecorrd', ankleCoord)
     }
 
     testGetUploadVideo = () => {
-        axios({
-            method: "get",
-            url: "https://3.1.81.36:8080/uploadvideo",
-            credentials: true,
-            // headers: { "Content-Type": "multipart/form-data" },
-            headers: { "Access-Control-Allow-Origin": "*" },
-        })
-            .then(function (response) {
-                //handle success
-                console.log('success res', response.data, JSON.stringify(JSON.parse(response.data.human_coordinates)));
-                console.log('rr', JSON.parse(response.data.human_coordinates)['0'])
-                console.log('aa', JSON.parse(response.data.key_frame_angles)['0'])
-            }.bind(this))
-            .catch(function (response) {
-                //handle error
-                console.log('err res', response);
-            })
+        // axios({
+        //     method: "get",
+        //     url: "https://3.1.81.36:8080/uploadvideo",
+        //     credentials: true,
+        //     // headers: { "Content-Type": "multipart/form-data" },
+        //     headers: { "Access-Control-Allow-Origin": "*" },
+        // })
+        //     .then(function (response) {
+        //         //handle success
+        //         console.log('success res', response.data, JSON.stringify(JSON.parse(response.data.human_coordinates)));
+        //         console.log('rr', JSON.parse(response.data.human_coordinates)['0'])
+        //         console.log('aa', JSON.parse(response.data.key_frame_angles)['0'])
+        //     }.bind(this))
+        //     .catch(function (response) {
+        //         //handle error
+        //         console.log('err res', response);
+        //     })
     }
 
     openNotification = type => {
@@ -596,10 +493,10 @@ class UploadVideo extends Component {
     getArrayBuffer = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            console.log(typeof (file))
+            // console.log(typeof (file))
             reader.addEventListener('load', () => {
                 resolve(reader.result);
-                console.log('file', reader.result)
+                // console.log('file', reader.result)
             });
             reader.readAsArrayBuffer(new Blob([JSON.stringify(file)]));
         })
@@ -612,7 +509,7 @@ class UploadVideo extends Component {
         var hr = Math.floor(seconds / 3600).toString().padStart(2, '0'),
             mins = Math.floor(seconds % 3600 / 60).toString().padStart(2, '0'),
             s = Math.floor(seconds % 60).toString().padStart(2, '0');
-        console.log(hr + ':' + mins + ':' + s)
+        // console.log(hr + ':' + mins + ':' + s)
         this.setState({ displayTime: hr + ':' + mins + ':' + s })
         // return hr + ':' + mins + ':' + s;
         //return `${h}:${m}:${s}`;
@@ -642,8 +539,6 @@ class UploadVideo extends Component {
         return (
             // <AmplifyAuthenticator>
             <div>
-
-
                 <Row>
                     <Col span={12}>
                         <Row>
@@ -773,7 +668,7 @@ class UploadVideo extends Component {
                                         <Radio value={4}>Balancing hand Angle</Radio>
                                         <Radio value={5}>Planting Foot Knee Angle</Radio>
                                         <Radio value={6}>Balancing Elbow Angle</Radio>
-                                        <Radio value={7}>Shoot Leg Ankle Angle</Radio>
+                                        <Radio value={7}>Shooting Leg Ankle Angle</Radio>
                                     </Radio.Group>
                                     <br />
                                     <br />

@@ -8,22 +8,16 @@ import axios from 'axios';
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three';
 import { OrbitControls } from 'three-orbitcontrols-ts';
-// import { GUI } from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 import { GUI } from 'dat.gui'
 
 
 const { Header, Footer, Sider, Content } = Layout;
 
-// const [value, setValue] = React.useState(2);
-
-
 class Dashboard extends Component {
     constructor () {
         super();
         this.state = {
-            // has3D: '',
-            // jointEdges: '',
-            // renderer: null
+
         }
 
     }
@@ -32,7 +26,6 @@ class Dashboard extends Component {
     // })
 
     componentDidMount() {
-
         // this.generateModel()
     }
 
@@ -44,7 +37,6 @@ class Dashboard extends Component {
             var jointEdges = this.props.jointEdges
         }
 
-        // var has3D = this.props.threeD
         if (this.props.threeD == '') {
             var has3D = ''
 
@@ -55,18 +47,8 @@ class Dashboard extends Component {
         else {
             var has3D = this.props.threeD.substring(0, this.props.threeD.length - 2).substring(2).split("', '")
 
-            // JSON.parse('[' + this.props.threeD + ']')
-            // console.log('has3d', has3D[0])
-            // console.log('check has3d 0 ', has3D[0].split(',')[0], has3D[0].split(',')[1], has3D[0].split(',')[2])
-            // has3D.map((p, i) => {
-            // console.log(parseFloat(p.split(',')[0]))
-            // })
-
-
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff); // Optional, black is default
-            // const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            // const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+            scene.background = new THREE.Color(0xffffff);
 
             // Perspective camera
             const aspect = window.innerWidth / window.innerHeight;
@@ -93,14 +75,11 @@ class Dashboard extends Component {
 
 
             const renderer = new THREE.WebGLRenderer();
-            // const renderer = new THREE.WebGLRenderer({ antialias: true });
             // renderer.setSize(802.5, 451.41)
             const windowRatio = window.innerHeight / window.innerWidth
             var ww = window.innerWidth - 300
             var hh = ww * windowRatio
             renderer.setSize(ww, hh);
-            // renderer.setSize(window.innerWidth / 1.5, window.innerHeight / 1.5);
-            // document.body.appendChild(renderer.domElement);
             if (document.getElementById('threeboard' + this.props.tabNumber.toString())) {
                 document.getElementById('threeboard' + this.props.tabNumber.toString()).innerHTML = ''
                 document.getElementById('threeboard' + this.props.tabNumber.toString()).appendChild(renderer.domElement)
@@ -110,21 +89,8 @@ class Dashboard extends Component {
             const geometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
             const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
             const cube = new THREE.Mesh(geometry, material);
-            // scene.add(cube);
-
-            // const geometry2 = new THREE.BufferGeometry().setFromPoints(points);
-            // const line = new THREE.Line(geometry2, material2);
-            // scene.add(line);
-
 
             var controls = new OrbitControls(camera, renderer.domElement);
-
-
-            // const meshSkeleton0 = new THREE.Mesh(geometrySkeleton, materialSkeleton);
-            // // meshSkeleton0.position.set(0, 0, 0)
-            // // meshSkeleton0.position.set(331.01685, -561.23645, 10222.217)
-            // meshSkeleton0.position.set(32.5328564453125, -1.706356964111328, 80.698447265625)
-            // scene.add(meshSkeleton0);
 
             // skeleton
             const materialSkeleton = new THREE.MeshBasicMaterial({ color: 0x000000 });
@@ -164,11 +130,6 @@ class Dashboard extends Component {
 
             }
 
-            // camera.position.z = 5;
-            // camera.position.set(0, 0, 0)
-            // camera.lookAt(571.6212, 323.9816, 10506.975);
-
-
             const cameraHelper = new THREE.CameraHelper(camera);
             scene.add(cameraHelper);
 
@@ -177,51 +138,24 @@ class Dashboard extends Component {
             const fullWidth = w * 3;
             const fullHeight = h * 2;
 
-            // A
-            // camera.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
-
-            const axesHelper = new THREE.AxesHelper(5);
+            const axesHelper = new THREE.AxesHelper(12000);
             scene.add(axesHelper);
 
+            // const animate = function () {
+            //     requestAnimationFrame(animate);
 
-            const animate = function () {
-                requestAnimationFrame(animate);
+            //     cube.rotation.x += 0.01;
+            //     cube.rotation.y += 0.01;
 
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
+            //     // controls.update();
 
-                // controls.update();
+            //     // camera.fov *= 0.1;
+            //     // camera.updateProjectionMatrix();
 
-                // camera.fov *= 0.1;
-                // camera.updateProjectionMatrix();
+            //     renderer.render(scene, camera);
+            // };
 
-                renderer.render(scene, camera);
-            };
-
-            animate();
-
-            // const bones = [];
-
-            // const shoulder = new THREE.Bone();
-            // const elbow = new THREE.Bone();
-            // const hand = new THREE.Bone();
-
-            // shoulder.add(elbow);
-            // elbow.add(hand);
-
-            // bones.push(shoulder);
-            // bones.push(elbow);
-            // bones.push(hand);
-
-            // shoulder.position.y = -5;
-            // elbow.position.y = 0;
-            // hand.position.y = 5;
-
-            // const armSkeleton = new THREE.Skeleton(bones);
-            // scene.add(armSkeleton)
-
-
-
+            // animate();
 
             // const canvas = document.querySelector('#c');
             // const view1Elem = document.querySelector('#view1');
@@ -264,14 +198,10 @@ class Dashboard extends Component {
             console.log('ready')
         });
 
-
-
-
         return (
             <div >
                 <Row>
                     <Col span={24}>
-                        {/* <h2>3D Model</h2> */}
                         {showError == 'Error' ? (
                             <div></div>
                         ) : (this.props.tabNumber == 0 ? (<div id='threeboard0'></div>) : (<div id='threeboard1'></div>)

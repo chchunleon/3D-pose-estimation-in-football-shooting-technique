@@ -207,14 +207,12 @@ function Main() {
     // ])
 
 
-    console.log('tabs', tabs)
+    // console.log('tabs', tabs)
 
 
 
     useEffect(() => {
-        // 使用瀏覽器 API 更新文件標題
-        // document.title = `You clicked ${tabs} times`;
-        console.log('useeff', tabs, video1)
+        // console.log('useeff', tabs, video1)
         if (hasVideo1 || hasVideo2)
             setData([
                 {
@@ -316,7 +314,6 @@ function Main() {
     }
 
     function handleRemoveVideo(tab) {
-        console.log('handle remove video', tab)
         if (tab == 0)
             setHasVideo1(false)
         else
@@ -325,7 +322,6 @@ function Main() {
     }
 
     function handleVideoChange(value, tab) {
-        console.log('value ', tab, value, video1, video2)
         if (tab == 0) {
             setVideo1(prevState => ({
                 ...prevState,
@@ -367,12 +363,10 @@ function Main() {
             setHasVideo2(true)
         }
 
-        // console.log('aa', video1, video2, data)
-
     }
 
     return (
-        <div>
+        <div style={{ padding: '24px', left: '150px', position: 'absolute', right: '150px', backgroundColor: '#ffffff' }}>
             <Row>
                 <Col span={24} ><h1 /*style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}*/>3D Pose Estimation in Football Shooting Technique</h1></Col>
             </Row>
