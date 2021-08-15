@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Box, OrbitControls, useTexture, Text, Stars, Sphere } from "@react-three/drei";
 // import { Physics, usePlane, useBox } from "use-cannon";
-import Grid from "./Grid";
-// import Controls from "./Controls";
 // import "./styles.css";
 
 const Cube = ({ position, rotation, scale = [1, 1, 1], handleClick }) => (
@@ -183,8 +181,6 @@ class ThreeGrid extends Component {
                             position={[-170.6357, -170.6357, 8069.8447]}
                         />
                         <ambientLight intensity={0.1} />
-                        <Grid size={100} />
-
 
                         <Sphere position={[331.01685, -561.23645, 10222.217]} scale={[this.state.xScale, this.state.yScale, this.state.zScale]} ><meshStandardMaterial attach="material" color="#000000" /></Sphere>
                         <Sphere position={[254.81538, -478.3606, 10233.464]} scale={[this.state.xScale, this.state.yScale, this.state.zScale]} ><meshStandardMaterial attach="material" color="#000000" /></Sphere>
