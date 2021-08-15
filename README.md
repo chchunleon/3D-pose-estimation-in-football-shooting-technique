@@ -22,7 +22,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## For Backend, you can first create a virtual environment and install all the dependencies
 
-### `activate your virtual environment`
+## Activate your virtual environment
 
 ### `pip install -r requirements.txt`
 
@@ -31,3 +31,12 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `python app.py`
 
 It will start the flask application and listens the the request from the frontend side.
+
+
+## After setting up the frontend and backend sides
+
+1 - You can upload a video, input height, weight and shooting foot
+![Alt text](./public/uploadVideo.png)
+
+2 - 
+![Alt text](./public/uploadVideo.png)
