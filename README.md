@@ -57,7 +57,7 @@ It will start the flask application and listens the the request from the fronten
 
 ![Alt text](./public/angle-image.png)
 
-![Alt text](./public/3d-model-image.png)
+![Alt text](./public/3d-model-gif.gif)
 
 6 - speed performance metrics
 
