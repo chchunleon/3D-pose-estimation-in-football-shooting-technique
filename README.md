@@ -36,7 +36,41 @@ It will start the flask application and listens the the request from the fronten
 ## After setting up the frontend and backend sides
 
 1 - You can upload a video, input height, weight and shooting foot
+
 ![Alt text](./public/uploadVideo.png)
 
-2 - 
-![Alt text](./public/uploadVideo.png)
+2 - click analyse button
+
+3 - analysis result rendering
+
+![Alt text](./public/analyse.png)
+
+4 - select a video frame
+
+![Alt text](./public/select-video-frame.png.png)
+
+5 - image filters
+
+![Alt text](./public/original-image.png)
+
+![Alt text](./public/skeleton-image.png)
+
+![Alt text](./public/angle-image.png)
+
+![Alt text](./public/3d-model-image.png)
+
+6 - speed performance metrics
+
+![Alt text](./public/velocity.png)
+
+7 - detected shooting frame
+
+![Alt text](./public/shooting-frame.png)
+
+8 - changes of ankle y coordinates over frames
+
+![Alt text](./public/anke-y-coordinates.png)
+
+9 - comparision between two videos
+
+![Alt text](./public/compare.png)
